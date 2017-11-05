@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+
+{% block title %}{{ super() }} - Chat{% endblock %}
+
+{% block menu %}
+<p class="text-center">
+	<a href="{{ url_for('default') }}">All Chat Rooms</a>
+</p>
+{% endblock %}
+{% block content %}
+
+<div class="row mt-4">
+	<div class="col-sm-12">
+		<h2 class="text-center">{{ room.name }}</h2>
+		<div class="messages">
+			{% for m in messages %}
+				{{ m.user.username }}: {{ m.message }}
+			{% endfor %}
+		</div>
+		
+	</div>
+</div>
+{% endblock %}
