@@ -14,10 +14,10 @@
 		<h2 class="text-center">{{ room.name }}</h2>
 		<div class="messages">
 			{% for m in messages %}
-				{{ m.user.username }}: {{ m.message }}
+				<div class="message">{{ m.user.username }}: {{ m.message }}</div>
 			{% endfor %}
 		</div>
-		
+
 	</div>
 </div>
 {% endblock %}

@@ -8,12 +8,17 @@
 from flask import Flask, request, session, url_for, redirect, render_template, flash
 from models import db, User, Room, Message
 from datetime import datetime
+from flask_restful import Api
+from resources import MessageListResource
 
 app = Flask(__name__)
 
 app.secret_key = "this is a terrible secret key"
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///chat.db'
 db.init_app(app)
+
+api = Api(app, prefix="/api")
+api.add_resource(MessageListResource, '/messages/', endpoint='messages')
 
 @app.cli.command('initdb')
 def initdb_command():

@@ -43,4 +43,4 @@ class Message(db.Model):
 		self.message = message
 
 	def __repr__(self):
-		return '<Message #{} sent in room #{} by user #{}: {}>'.format(self.id, self.room_id, self.user_id, self.message)
+		return '<Message #{} sent in room #{} by user #{}: {} at {}>'.format(self.id, self.room_id, self.user_id, self.message, self.timestamp)
