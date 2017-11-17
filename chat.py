@@ -138,7 +138,7 @@ def error():
 	"""Javascript will redirect to this page to flash an error message and redirect back to default."""
 
 	if int(request.args.get('error')) == 1:
-		flash("That chat room no longer exists.")
+		flash("That chat room has been deleted and no longer exists.")
 	elif int(request.args.get('error')) == 2:
 		flash("You cannot be in more than one chat room at once.")
 
