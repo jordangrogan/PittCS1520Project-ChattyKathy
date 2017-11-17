@@ -13,8 +13,6 @@ message_fields = {
 
 parser = reqparse.RequestParser(bundle_errors=True)
 parser.add_argument('room_id', type=int, required=True, location='json') # Required just sees if the key exists, could be null!
-#parser.add_argument('user_id', type=int, required=True, location='json')
-#parser.add_argument('timestamp', type=str, required=True, location='json')
 parser.add_argument('message', type=str, location='json')
 
 class MessageListResource(Resource):
@@ -30,11 +28,13 @@ class MessageListResource(Resource):
 
         room_id = query_args['room_id']
 
+        # If the room exists
         if Room.query.get(room_id) != None:
             messages = messages.filter_by(room_id=room_id)
             print("Room ID: ", room_id)
 
             user = User.query.get(session['user_id'])
+            # If the user is in the room (user can only enter one room at a time)
             if room_id == user.currentRoom:
                 print("User:", session["user_id"])
 
