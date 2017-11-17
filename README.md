@@ -9,7 +9,7 @@ Pitt ID: jog89 3779423
 Lecture: Tuesday/Thursday 6pm  
 Recitation: Thursday 7:30pm
 
-To run, install the required dependencies in your python 3 virtual environment:  
+To run, install the required dependencies in your newly created python 3 virtual environment:  
 `pip install -r requirements.txt`  
 Then, set FLASK_APP to chat.py:  
 `export FLASK_APP=chat.py`  
