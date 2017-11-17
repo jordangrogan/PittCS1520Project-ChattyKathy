@@ -23,7 +23,7 @@
 		{% if rooms: %}
 		<ul>
 			{% for r in rooms %}
-				<li><a href="{{ url_for('chat', room=r.id) }}">{{ r.name }}</a> <a href="{{ url_for('delete', room=r.id) }}">[DELETE]</a></li>
+				<li><a href="{{ url_for('chat', room=r.id) }}">{{ r.name }}</a> {% if r in myrooms %}<small><a href="{{ url_for('delete', room=r.id) }}">[DELETE]</a></small>{% endif %}</li>
 			{% endfor %}
 		</ul>
 		{% else: %}

@@ -47,7 +47,8 @@ def default():
 				flash("The chat room has been added!")
 
 		rooms = Room.query.all()
-		return render_template('rooms.html', rooms=rooms)
+		myrooms = user.rooms
+		return render_template('rooms.html', rooms=rooms, myrooms=myrooms)
 
 	return redirect(url_for('login'))
 
@@ -152,7 +153,7 @@ def delete():
 	r = Room.query.get(room_id)
 
 	# check ownership
-	if r.creator_id == session["user_id"]:
+	if r and r.creator_id == session["user_id"]:
 		db.session.delete(r)
 		db.session.commit()
 		flash("That chat room has been deleted.")

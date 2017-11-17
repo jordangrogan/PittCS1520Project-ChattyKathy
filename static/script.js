@@ -16,6 +16,11 @@ function setup() {
 	  }
 	});
 
+	/* Set focus to the message's textbox */
+	document.getElementById("message").focus();
+
+	adjustScroll();
+
 	timeoutID = window.setTimeout(poller, timeout);
 }
 
@@ -79,12 +84,9 @@ function handlePoll(httpRequest) {
 			//console.log("test:" + rows[0]["message"]);
 			for (var i = 0; i < rows.length; i++) { // add all the rows from the response
 				addMessage(rows[i]["username"], rows[i]["message"]);
-			}
 
-			/* Keep the messages container div scrolled to the bottom when new messages are available */
-			/* https://stackoverflow.com/questions/270612/scroll-to-bottom-of-div */
-			var messagesContainerDiv = document.getElementById("messagesContainer");
-			messagesContainerDiv.scrollTop = messagesContainerDiv.scrollHeight;
+				adjustScroll();
+			}
 
 			timeoutID = window.setTimeout(poller, timeout);
 
@@ -118,6 +120,13 @@ function addMessage(username, message) {
 }
 
 window.addEventListener("load", setup, true);
+
+function adjustScroll() {
+	/* Keep the messages container div scrolled to the bottom when new messages are available */
+	/* https://stackoverflow.com/questions/270612/scroll-to-bottom-of-div */
+	var messagesContainerDiv = document.getElementById("messagesContainer");
+	messagesContainerDiv.scrollTop = messagesContainerDiv.scrollHeight;
+}
 
 /* 	Function to get URL query arguements, from:
 		https://css-tricks.com/snippets/javascript/get-url-variables/ */
