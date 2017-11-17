@@ -16,16 +16,14 @@ function setup() {
 	  }
 	});
 
-	/* Set focus to the message's textbox */
-	document.getElementById("message").focus();
+	document.getElementById("message").focus(); // Set focus to the message's textbox
 
-	adjustScroll();
+	adjustScroll(); // Adjust the messages window to be scrolled to the bottom
 
 	timeoutID = window.setTimeout(poller, timeout);
 }
 
 function makePost() {
-	console.log("button clicked!");
 	var httpRequest = new XMLHttpRequest();
 
 	if (!httpRequest) {
@@ -33,7 +31,7 @@ function makePost() {
 		return false;
 	}
 
-	var message = document.getElementById("message").value
+	var message = document.getElementById("message").value;
 	httpRequest.onreadystatechange = function() { handlePost(httpRequest, message) };
 
 	httpRequest.open("POST", "/api/messages/");
@@ -50,8 +48,8 @@ function makePost() {
 function handlePost(httpRequest, message) { /* need second parameter? */
 	if (httpRequest.readyState === XMLHttpRequest.DONE) {
 		if (httpRequest.status >= 200 && httpRequest.status < 300) {
-			//addRow(row);
-			clearInput();
+			document.getElementById("message").value = ""; // Clear input of message textbox
+			document.getElementById("message").focus(); // Set focus to the message textbox
 		} else {
 			alert("There was a problem with the post request.");
 		}
@@ -74,37 +72,26 @@ function poller() {
 function handlePoll(httpRequest) {
 	if (httpRequest.readyState === XMLHttpRequest.DONE) {
 		if (httpRequest.status === 200) {
-			var tab = document.getElementById("messages");
-			/*while (tab.rows.length > 0) { // Delete all the rows
-				tab.deleteRow(0);
-			}*/
 
 			var rows = JSON.parse(httpRequest.responseText); // Parse the response of the json object we got back
-			console.log(rows);
-			//console.log("test:" + rows[0]["message"]);
 			for (var i = 0; i < rows.length; i++) { // add all the rows from the response
 				addMessage(rows[i]["username"], rows[i]["message"]);
-
-				adjustScroll();
+				adjustScroll(); // Adjust the messages window to be scrolled to the bottom
 			}
 
 			timeoutID = window.setTimeout(poller, timeout);
 
-		} else if(httpRequest.status === 404) {
-			window.location = "/error?error=1"; /* The room has been deleted. */
-		} else if(httpRequest.status === 403) {
-			window.location = "/error?error=2"; /* The user entered another room, kick them out of this one. */
+		} else if(httpRequest.status === 404) { /* The room has been deleted. */
+			window.location = "/error?error=1";
+		} else if(httpRequest.status === 403) { /* The user entered another room, kick them out of this one. */
+			window.location = "/error?error=2";
 		} else {
 			alert("There was a problem with the poll request.  you'll need to refresh the page to recieve updates again!");
 		}
-		/* DOES THE ROOM EXIST? IF NOT RETURN ERROR!!!! */
 	}
 }
 
-function clearInput() {
-	document.getElementById("message").value = "";
-}
-
+/*	Adds message to the messages table */
 function addMessage(username, message) {
 	var tableRef = document.getElementById("messages");
 	var newRow   = tableRef.insertRow();
@@ -119,11 +106,9 @@ function addMessage(username, message) {
 	messageCell.appendChild(messageText);
 }
 
-window.addEventListener("load", setup, true);
-
+/* 	Keep the messages container div scrolled to the bottom when new messages are available
+ 		https://stackoverflow.com/questions/270612/scroll-to-bottom-of-div */
 function adjustScroll() {
-	/* Keep the messages container div scrolled to the bottom when new messages are available */
-	/* https://stackoverflow.com/questions/270612/scroll-to-bottom-of-div */
 	var messagesContainerDiv = document.getElementById("messagesContainer");
 	messagesContainerDiv.scrollTop = messagesContainerDiv.scrollHeight;
 }
@@ -140,3 +125,5 @@ function getQueryVariable(variable)
        }
        return(false);
 }
+
+window.addEventListener("load", setup, true);
