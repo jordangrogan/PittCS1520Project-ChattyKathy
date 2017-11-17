@@ -6,6 +6,7 @@ class User(db.Model):
 	id = db.Column(db.Integer, primary_key=True)
 	username = db.Column(db.String(80), unique=True)
 	password = db.Column(db.String(120))
+	currentRoom = db.Column(db.Integer)
 	rooms = db.relationship('Room', backref='creator')
 	messages = db.relationship('Message', backref='user')
 

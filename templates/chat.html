@@ -2,6 +2,9 @@
 
 {% block title %}{{ super() }} - Chat{% endblock %}
 
+{% block head %}<script type="text/javascript" src="{{ url_for('static', filename='script.js') }}"></script>
+{% endblock %}
+
 {% block menu %}
 <p class="text-center">
 	<a href="{{ url_for('default') }}">All Chat Rooms</a>
@@ -12,12 +15,20 @@
 <div class="row mt-4">
 	<div class="col-sm-12">
 		<h2 class="text-center">{{ room.name }}</h2>
-		<div class="messages">
+		<div class="messages" id="messagesContainer">
+			<table id="messages">
 			{% for m in messages %}
-				<div class="message">{{ m.user.username }}: {{ m.message }}</div>
+				<tr class="message">
+					<td class="username">{{ m.user.username }}:</td>
+					<td>{{ m.message }}</td>
+				</tr>
 			{% endfor %}
+			</table>
 		</div>
-
+		<form name="theForm">
+			<textarea id="message" name="message" value="" placeholder="Type message..."></textarea>
+			<input type="button" id="submit" name="submit" value="Submit" />
+		</form>
 	</div>
 </div>
 {% endblock %}

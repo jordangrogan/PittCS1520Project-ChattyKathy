@@ -57,8 +57,16 @@ def chat():
 
 	if "username" in session:
 		if request.args.get('room'):
+
+			# Set the user's current room = currentRoom ID
+			user = User.query.get(session['user_id'])
+			user.currentRoom = request.args.get('room')
+			db.session.commit()
+
 			room = Room.query.get(request.args.get('room'))
 			messages = Message.query.filter_by(room_id=room.id).order_by(Message.timestamp).all()
+			session["lastPolled"] = datetime.now().strftime("%Y-%m-%dT%H:%M:%S.%f")
+			print("Setting Last Polled:", session["lastPolled"])
 			return render_template('chat.html', room=room, messages=messages)
 		else:
 			flash("Error displaying chat room.")
@@ -123,3 +131,32 @@ def register():
 			flash("You were successfully registered and can login now.")
 			return redirect(url_for('login'))
 	return render_template('register.html')
+
+@app.route("/error")
+def error():
+	"""Logs the user out."""
+
+	if int(request.args.get('error')) == 1:
+		flash("That chat room no longer exists.")
+	elif int(request.args.get('error')) == 2:
+		flash("You cannot be in more than one chat room at once.")
+
+	return redirect(url_for("default"))
+
+@app.route("/delete")
+def delete():
+	"""Logs the user out."""
+
+	room_id = int(request.args.get('room'))
+
+	r = Room.query.get(room_id)
+
+	# check ownership
+	if r.creator_id == session["user_id"]:
+		db.session.delete(r)
+		db.session.commit()
+		flash("That chat room has been deleted.")
+	else:
+		flash("You do not have permission to delete that chat room.")
+
+	return redirect(url_for("default"))

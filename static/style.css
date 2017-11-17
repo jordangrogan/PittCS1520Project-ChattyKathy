@@ -2,25 +2,30 @@ body {
   background: #e6e8f0;
 }
 
-table {
-  margin: 0 auto;
-  border: solid 2px black;
-  width: 100%;
-}
-
-td {
-  padding: 5px 15px 5px 15px;
-  border: solid 1px gray;
-}
-
-tr.header {
-  font-weight: bold;
-}
-
 footer {
   font-size: 12px;
 }
 
 .italics {
   font-style: italic;
+}
+
+.messages {
+  display: block;
+  height: 350px;
+  overflow-y: scroll;
+}
+
+.messages table {
+  width: 100%;
+}
+
+.username {
+  font-weight: bold;
+  padding-right: 5px;
+}
+
+textarea {
+  width: 100%;
+  margin-top: 20px;
 }
