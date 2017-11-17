@@ -135,7 +135,7 @@ def register():
 
 @app.route("/error")
 def error():
-	"""Logs the user out."""
+	"""Javascript will redirect to this page to flash an error message and redirect back to default."""
 
 	if int(request.args.get('error')) == 1:
 		flash("That chat room no longer exists.")
